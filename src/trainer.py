@@ -1,6 +1,7 @@
 # src/trainer.py
 from trl import GRPOConfig, GRPOTrainer
 from unsloth import is_bfloat16_supported
+from datetime import datetime
 from src.data_loader import get_gsm8k_questions
 from src.rewards import (xmlcount_reward_func, soft_format_reward_func, 
                          strict_format_reward_func, int_reward_func, 
@@ -26,11 +27,12 @@ def create_trainer(model, tokenizer):
         num_generations=8,
         max_prompt_length=256,
         max_completion_length=200,
-        max_steps=250,
+        max_steps=500,
         save_steps=250,
         max_grad_norm=0.1,
-        report_to="none",
+        report_to="wandb",
         output_dir="outputs",
+        run_name=f"GRPO-{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}",
     )
     
     trainer = GRPOTrainer(
